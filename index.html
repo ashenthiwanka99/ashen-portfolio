@@ -42,7 +42,7 @@ main,footer{position:relative;z-index:1}
 /* where a section shows only the particle canvas, the canvas is what the pointer meets */
 main,#work,.hero,.mid,.hero-foot,.work-head,.project,.stage,.more,.about,.about .grid,.contact{pointer-events:none}
 main > section{pointer-events:auto}
-.mid h1,.hero-foot > *,.work-head h2,.project .copy,.project .shot,.more > *,.about .grid > *,.contact > :not(.stage){pointer-events:auto}
+.mid h1,.hero-foot > *,.work-head h2,.project .copy,.project .shot,.project .demo,.more > *,.about .grid > *,.contact > :not(.stage){pointer-events:auto}
 .wrap{padding-inline:var(--m)}
 .grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
 
@@ -90,6 +90,15 @@ h1{font-size:15.4vw;line-height:.82;letter-spacing:-0.03em;white-space:nowrap;te
 .shot{grid-column:6/13;grid-row:2;margin:0;display:grid;gap:24px}
 .project.flip .shot{grid-column:1/8}
 .shot .pair{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.demo{grid-column:6/13;grid-row:2;display:grid;grid-template-columns:auto auto 1fr;align-items:end;column-gap:clamp(24px,4vw,64px);row-gap:20px;background:var(--surface);padding:clamp(16px,2vw,32px)}
+.project.flip .demo{grid-column:1/8}
+.demo .read{display:flex;align-items:baseline;gap:10px}
+.demo .read p{margin:0}
+.demo .fig{font-size:var(--head);font-variant-numeric:tabular-nums}
+.demo #rpm{display:inline-block;min-width:2.3em;text-align:right}
+.demo .btn{justify-self:end;border:0;font:inherit;font-weight:500;cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none}
+.demo .btn:active{background:#ffc9b0}
+.demo .meta{grid-column:1/-1;margin:0}
 .frame{background:var(--surface);padding:clamp(10px,1.4vw,24px);overflow:hidden}
 .frame img{display:block;width:100%;height:auto}
 .shot figcaption{color:var(--muted);font-size:var(--small)}
@@ -205,6 +214,8 @@ h1{font-size:15.4vw;line-height:.82;letter-spacing:-0.03em;white-space:nowrap;te
   .project .copy,.project.flip .copy{grid-column:1/13;grid-row:2;position:static;margin-top:0}
   .shot,.project.flip .shot{grid-column:1/13;grid-row:3;margin-top:24px;gap:16px}
   .shot .pair{grid-template-columns:1fr;gap:16px}
+  .demo,.project.flip .demo{grid-column:1/13;grid-row:3;grid-template-columns:auto 1fr;margin-top:24px}
+  .demo .btn{grid-column:1/-1;grid-row:1;justify-self:stretch;justify-content:center}
   .more{padding-block:0 96px}
   .more .remark,.more ul{grid-column:1/13}
   .more li a{grid-template-columns:1fr auto}
@@ -325,6 +336,12 @@ h1{font-size:15.4vw;line-height:.82;letter-spacing:-0.03em;white-space:nowrap;te
         <p data-in style="--i:1">Drives the shift lights on a Logitech G29 wheel from live engine RPM in Forza Horizon 5 and Euro Truck Simulator 2.</p>
         <p class="meta" data-in style="--i:2">Python · Sim racing · Telemetry</p>
         <a class="link" href="https://github.com/ashenthiwanka99/g29-rpm-leds" data-in style="--i:3">Read the code on GitHub</a>
+      </div>
+      <div class="demo" data-in>
+        <div class="read"><p class="fig"><span id="rpm">900</span></p><p>rpm</p></div>
+        <div class="read"><p class="fig" id="gear">1</p><p>gear</p></div>
+        <button class="btn" type="button" id="rev">Hold to rev</button>
+        <p class="meta">A simulated engine. The lights on the wheel follow its revs, the way the real ones follow Forza Horizon 5 and Euro Truck Simulator 2.</p>
       </div>
     </article>
 
@@ -625,15 +642,42 @@ function keysShape(w, h) {           // a 68-key board
   return o;
 }
 
-function wheelShape(w, h) {          // a racing wheel: rim, three spokes, hub, and a row of shift lights
-  const o = new Float32Array(N * 3), R = Math.min(w, h) * 0.43, spokes = [Math.PI, 0, -Math.PI / 2];
+let wheelR = 1;
+function wheelShape(w, h) {          // a racing wheel: thick flat-bottomed rim, three plate spokes, hub, buttons, paddles
+  const o = new Float32Array(N * 3), R = Math.min(w, h) * 0.45, Rm = R * 0.9, tube = R * 0.085, zr = R * 0.17;
+  wheelR = R;
+  const lerp = (a, b, u) => a + (b - a) * u;
+  const buttons = [[-0.5, -0.04], [-0.62, -0.04], [-0.56, 0.03], [-0.56, -0.11], [-0.73, 0.01], [0.5, -0.04], [0.62, -0.04], [0.56, 0.03], [0.56, -0.11], [0.73, 0.01]];
+  const edgeV = () => rnd() < 0.72 ? (rnd() < 0.5 ? -1 : 1) : rnd() * 2 - 1;      // mostly the outline of a plate, a little fill
   for (let i = 0; i < N; i++) {
-    const t = rnd(); let x, y, z = G() * 0.02;
-    if (t < 0.46) { const a = rnd() * TAU, r = R * (1 + G() * 0.045); x = Math.cos(a) * r; y = Math.sin(a) * r; z += Math.abs(G()) * 0.08; }
-    else if (t < 0.68) { const a = spokes[rnd() * 3 | 0], r = R * (0.3 + rnd() * 0.68), off = G() * R * 0.05; x = Math.cos(a) * r - Math.sin(a) * off; y = Math.sin(a) * r + Math.cos(a) * off; }
-    else if (t < 0.84) { const a = rnd() * TAU, r = rnd() < 0.7 ? R * (0.3 + G() * 0.012) : R * 0.3 * Math.sqrt(rnd()); x = Math.cos(a) * r; y = Math.sin(a) * r; z += 0.05; }
-    else { const k = rnd() * 10 | 0, a = Math.PI * (0.74 - 0.48 * k / 9), r = R * 0.47; x = Math.cos(a) * r + G() * R * 0.016; y = Math.sin(a) * r + G() * R * 0.016; z += 0.1; }
-    tiltX(o, i * 3, x, y, z, -0.3);
+    const t = rnd(); let x, y, z;
+    if (t < 0.42) {                                                                // rim: a tube, thicker at the grips, flat at the bottom
+      const a = rnd() * TAU, b = rnd() * TAU, sa = Math.sin(a), ca = Math.cos(a);
+      const grip = Math.abs(ca) > 0.8 && sa > -0.45 && sa < 0.6 ? 1.32 : 1, rr = tube * grip;
+      let bx = ca * Rm, by = sa * Rm, nx = ca, ny = sa;
+      if (by < -0.84 * Rm) { by = -0.84 * Rm; nx = 0; ny = -1; }
+      x = bx + nx * rr * Math.cos(b); y = by + ny * rr * Math.cos(b); z = zr + rr * Math.sin(b);
+    } else if (t < 0.58) {                                                         // the two side spokes, dished back to the hub
+      const sg = rnd() < 0.5 ? -1 : 1, u = rnd(), v = edgeV(), hw = lerp(0.17, 0.1, u) * R;
+      x = sg * lerp(0.33, 0.82, u) * R; y = -0.04 * R + v * hw; z = lerp(0.04 * R, zr * 0.9, u);
+    } else if (t < 0.67) {                                                         // the bottom spoke, with its slot
+      const slot = rnd() < 0.3, u = slot ? lerp(0.28, 0.74, rnd()) : rnd(), v = slot ? (rnd() < 0.5 ? -0.42 : 0.42) : edgeV(), hw = lerp(0.13, 0.09, u) * R;
+      x = v * hw; y = -lerp(0.33, 0.77, u) * R; z = lerp(0.04 * R, zr * 0.9, u);
+    } else if (t < 0.79) {                                                         // hub and the ring at its centre
+      const a = rnd() * TAU, k = rnd(), r = k < 0.5 ? 0.33 * R * (1 + G() * 0.012) : k < 0.8 ? 0.13 * R * (1 + G() * 0.02) : 0.33 * R * Math.sqrt(rnd());
+      x = Math.cos(a) * r; y = Math.sin(a) * r; z = 0.05 * R;
+    } else if (t < 0.84) {                                                         // the housing the shift lights sit in
+      const a = Math.PI * lerp(0.735, 0.265, rnd()), r = (rnd() < 0.5 ? 0.365 : 0.44) * R;
+      x = Math.cos(a) * r; y = Math.sin(a) * r; z = 0.07 * R;
+    } else if (t < 0.93) {                                                         // buttons on the spokes
+      const c = buttons[rnd() * buttons.length | 0], a = rnd() * TAU, r = 0.034 * R * (rnd() < 0.75 ? 1 : Math.sqrt(rnd()));
+      x = c[0] * R + Math.cos(a) * r; y = c[1] * R + Math.sin(a) * r; z = lerp(0.04 * R, zr * 0.9, (Math.abs(c[0]) - 0.33) / 0.49) + 0.035 * R;
+    } else {                                                                       // paddle shifters behind the spokes
+      const sg = rnd() < 0.5 ? -1 : 1, e = rnd() * 4 | 0, q = rnd();
+      const r = (e === 0 ? 0.5 : e === 1 ? 0.8 : lerp(0.5, 0.8, q)) * R, a = (e === 2 ? 0.3 : e === 3 ? 0.46 : lerp(0.3, 0.46, q));
+      x = sg * Math.cos(a) * r; y = Math.sin(a) * r; z = -0.1 * R;
+    }
+    o[i * 3] = x + G() * 0.006; o[i * 3 + 1] = y + G() * 0.006; o[i * 3 + 2] = z + G() * 0.006;
   }
   return o;
 }
@@ -653,7 +697,7 @@ const defs = {
   name:   { make: (w, h) => textShape(innerWidth / innerHeight < 0.95 ? ['ASHEN', 'PERERA'] : ['ASHEN PERERA'], w * 0.98, h * 0.92), alpha: 1, rot: () => 0 },
   wave:   { make: waveShape,   alpha: 1,   rot: t => Math.sin(t * 0.4) * 0.38 },
   keys:   { make: keysShape,   alpha: 1,   rot: t => -0.25 + Math.sin(t * 0.33) * 0.28 },
-  wheel:  { make: wheelShape,  alpha: 1,   rot: t => Math.sin(t * 0.45) * 0.55 },
+  wheel:  { make: wheelShape,  alpha: 1,   rot: t => 0.42 + Math.sin(t * 0.31) * 0.14, tilt: -0.34, roll: t => Math.sin(t * 0.8) * 0.5 + Math.sin(t * 2.1) * 0.1 },
   vortex: { make: vortexShape, alpha: 0.6, rot: t => t * 0.07 },
   word:   { make: (w, h) => textShape([word], w * 0.92, h * 0.8), alpha: 1, rot: () => 0 },
 };
@@ -661,7 +705,7 @@ const stations = [...document.querySelectorAll('[data-station]')].map(el => {
   const stage = el.matches('[data-stage]') ? el : el.querySelector('[data-stage]');
   return { el, stage, def: defs[stage.dataset.stage], pos: null, cy: 0 };
 });
-const K = stations.length;
+const K = stations.length, wheelStation = stations.find(s => s.def === defs.wheel);
 
 /* ---------- the grains ---------- */
 const geo = new THREE.BufferGeometry();
@@ -673,20 +717,22 @@ geo.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 100);
 const U = {
   uTime: { value: 0 }, uMix: { value: 0 }, uPR: { value: renderer.getPixelRatio() }, uSize: { value: small ? 1.6 : 2.3 },
   uFromRot: { value: 0 }, uToRot: { value: 0 }, uFromA: { value: 1 }, uToA: { value: 1 },
+  uFromRoll: { value: 0 }, uToRoll: { value: 0 }, uFromTilt: { value: 0 }, uToTilt: { value: 0 },
   uFromOff: { value: new THREE.Vector3() }, uToOff: { value: new THREE.Vector3() },
   uMouse: { value: new THREE.Vector2(99, 99) }, uStir: { value: 0 }, uMotion: { value: reduce ? 0 : 1 },
 };
 const mat = new THREE.ShaderMaterial({
   uniforms: U, transparent: true, depthTest: false, depthWrite: false, blending: THREE.AdditiveBlending,
   vertexShader: `
-    uniform float uTime,uMix,uPR,uSize,uFromRot,uToRot,uFromA,uToA,uStir,uMotion;
+    uniform float uTime,uMix,uPR,uSize,uFromRot,uToRot,uFromA,uToA,uStir,uMotion,uFromRoll,uToRoll,uFromTilt,uToTilt;
     uniform vec3 uFromOff,uToOff; uniform vec2 uMouse;
     attribute vec3 aTo; attribute vec4 aRand;
     varying float vHeat; varying float vAlpha;
     vec3 rotY(vec3 p,float a){float c=cos(a),s=sin(a);return vec3(c*p.x+s*p.z,p.y,-s*p.x+c*p.z);}
+    vec3 xf(vec3 p,float roll,float tilt,float yaw){float c=cos(roll),s=sin(roll);p=vec3(c*p.x-s*p.y,s*p.x+c*p.y,p.z);c=cos(tilt);s=sin(tilt);p=vec3(p.x,c*p.y-s*p.z,s*p.y+c*p.z);return rotY(p,yaw);}
     vec3 flow(vec3 p,float t){return vec3(sin(p.y*1.7+t)+sin(p.z*1.3+t*.7),sin(p.z*1.5+t*1.1)+sin(p.x*1.9+t*.6),sin(p.x*1.4+t*.9)+sin(p.y*1.6+t*1.3))*.5;}
     void main(){
-      vec3 a=rotY(position,uFromRot)+uFromOff, b=rotY(aTo,uToRot)+uToOff;
+      vec3 a=xf(position,uFromRoll,uFromTilt,uFromRot)+uFromOff, b=xf(aTo,uToRoll,uToTilt,uToRot)+uToOff;
       float m=clamp(uMix*1.7-aRand.x*.7,0.,1.); m=m*m*(3.-2.*m);
       vec3 p=mix(a,b,m);
       float tr=sin(m*3.14159);                               // in flight between two shapes
@@ -731,6 +777,71 @@ const dust = new THREE.Points(dgeo, new THREE.ShaderMaterial({
 }));
 scene.add(dust);
 
+/* shift lights: a small second layer that sits on the wheel's light housings and follows a simulated engine */
+const LEDN = 1500, LN = LEDN + 260, lgeo = new THREE.BufferGeometry(), lp = new Float32Array(LN * 3), lk = new Float32Array(LN);
+lgeo.setAttribute('position', new THREE.BufferAttribute(lp, 3)); lgeo.setAttribute('k', new THREE.BufferAttribute(lk, 1));
+lgeo.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 100);
+const LU = { uPR: U.uPR, uRot: { value: 0 }, uRoll: { value: 0 }, uTilt: { value: 0 }, uOff: { value: new THREE.Vector3() }, uAlpha: { value: 0 }, uLevel: { value: 0 }, uFlash: { value: 1 } };
+function buildLeds() {
+  const R = wheelR;
+  for (let i = 0; i < LN; i++) {
+    if (i < LEDN) {                    // ten lights in the housing above the hub
+      const k = i % 10, a = Math.PI * (0.7 - 0.4 * k / 9), r = R * 0.402;
+      lp[i * 3] = Math.cos(a) * r + G() * R * 0.02; lp[i * 3 + 1] = Math.sin(a) * r + G() * R * 0.02; lp[i * 3 + 2] = 0.085 * R; lk[i] = k;
+    } else {                           // the centre marker at twelve o'clock on the rim
+      const a = Math.PI / 2 + (rnd() - 0.5) * 0.07, b = rnd() * TAU, rr = R * 0.092 * Math.sqrt(rnd());
+      lp[i * 3] = Math.cos(a) * (R * 0.9 + rr * Math.cos(b)); lp[i * 3 + 1] = Math.sin(a) * (R * 0.9 + rr * Math.cos(b)); lp[i * 3 + 2] = R * 0.17 + rr * Math.sin(b); lk[i] = -1;
+    }
+  }
+  lgeo.attributes.position.needsUpdate = true; lgeo.attributes.k.needsUpdate = true;
+}
+const leds = new THREE.Points(lgeo, new THREE.ShaderMaterial({
+  uniforms: LU, transparent: true, depthTest: false, depthWrite: false, blending: THREE.NormalBlending,
+  vertexShader: `uniform float uPR,uRot,uRoll,uTilt,uLevel,uFlash,uAlpha; uniform vec3 uOff; attribute float k; varying vec3 vC; varying float vA;
+    void main(){ vec3 p=position; float c=cos(uRoll),s=sin(uRoll); p=vec3(c*p.x-s*p.y,s*p.x+c*p.y,p.z);
+      c=cos(uTilt); s=sin(uTilt); p=vec3(p.x,c*p.y-s*p.z,s*p.y+c*p.z);
+      c=cos(uRot); s=sin(uRot); p=vec3(c*p.x+s*p.z,p.y,-s*p.x+c*p.z)+uOff;
+      float pr=min(k,9.-k);                                  // the row fills from both ends toward the middle
+      float lit=smoothstep(pr,pr+.5,uLevel)*uFlash;
+      vec3 on=pr<1.5?vec3(.2,.95,.3):pr<3.5?vec3(1.,.7,.08):vec3(1.,.12,.06);
+      if(k<-.5){ lit=1.; on=vec3(1.,.33,.06); }
+      vC=mix(vec3(.36,.34,.31),on,lit);
+      vA=uAlpha*(.55+.45*lit);
+      vec4 mv=modelViewMatrix*vec4(p,1.); gl_Position=projectionMatrix*mv; gl_PointSize=(3.+lit*2.4)*uPR*(6./-mv.z); }`,
+  fragmentShader: `varying vec3 vC; varying float vA; void main(){ float d=length(gl_PointCoord-.5); gl_FragColor=vec4(vC,smoothstep(.5,.2,d)*vA); }`,
+}));
+leds.renderOrder = 2;
+scene.add(leds);
+
+/* the engine behind them: revs through six gears on its own, or under the visitor's thumb */
+const eng = { rpm: 900, gear: 1, hold: false, lastUser: -1e9, autoThr: 1, limT: 0, idleT: 0, shown: '' };
+const rpmEl = document.getElementById('rpm'), gearEl = document.getElementById('gear'), revBtn = document.getElementById('rev');
+if (revBtn) {
+  const on = () => { eng.hold = true; eng.lastUser = performance.now(); };
+  const off = () => { if (eng.hold) { eng.hold = false; eng.lastUser = performance.now(); } };
+  revBtn.addEventListener('pointerdown', e => { try { revBtn.setPointerCapture(e.pointerId); } catch (_) {} on(); });
+  ['pointerup', 'pointercancel', 'lostpointercapture', 'blur'].forEach(n => revBtn.addEventListener(n, off));
+  ['pointerup', 'pointercancel', 'blur'].forEach(n => addEventListener(n, off));
+  revBtn.addEventListener('keydown', e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); on(); } });
+  revBtn.addEventListener('keyup', off);
+  revBtn.addEventListener('contextmenu', e => e.preventDefault());
+}
+function stepEngine(dt, now) {
+  const user = eng.hold || now - eng.lastUser < 3000;
+  const thr = eng.hold ? 1 : (user || reduce) ? 0 : eng.autoThr;
+  eng.rpm += (thr ? [0, 5200, 3900, 3000, 2300, 1800, 1400][eng.gear] : -2400) * dt;
+  if (eng.rpm > 6900) {
+    if (eng.gear < 6) { eng.gear++; eng.rpm = 4400; }
+    else { eng.rpm = 6700; eng.limT += 0.12; if (eng.limT > 1) { eng.autoThr = 0; eng.limT = 0; } }   // on the limiter, then lift off
+  }
+  if (!thr && eng.rpm < 2300 && eng.gear > 1) { eng.gear--; eng.rpm = 3700; }
+  if (eng.rpm <= 900) { eng.rpm = 900; if (!eng.autoThr) { eng.idleT += dt; if (eng.idleT > 0.8) { eng.autoThr = 1; eng.idleT = 0; } } }
+  LU.uLevel.value = Math.max(0, Math.min(1, (eng.rpm - 3600) / 3100)) * 5.2;
+  LU.uFlash.value = eng.rpm > 6680 ? (now / 1000 * 9 % 1 < 0.5 ? 1 : 0.15) : 1;
+  const text = (Math.round(eng.rpm / 50) * 50).toLocaleString('en-US') + '|' + eng.gear;
+  if (text !== eng.shown && rpmEl) { eng.shown = text; rpmEl.textContent = text.split('|')[0]; gearEl.textContent = eng.gear; }
+}
+
 /* ---------- layout ---------- */
 let lastW = 0, lastH = 0, curI = -1;
 function layout(force) {
@@ -743,7 +854,7 @@ function layout(force) {
     const r = s.stage.getBoundingClientRect(); s.cy = r.top + scrollY + r.height / 2;
     if (rebuild) { const q = s.stage.getBoundingClientRect(); s.pos = s.def.make(q.width * px, q.height * px); }
   }
-  if (rebuild) { lastW = w; lastH = h; curI = -1; }
+  if (rebuild) { lastW = w; lastH = h; curI = -1; buildLeds(); }
 }
 function offsetOf(s, v) {            // where the station's stage is on screen right now, in world units
   const q = s.stage.getBoundingClientRect();
@@ -783,14 +894,19 @@ function frame(now) {
   if (rewrite) {
     const k = (now - rewrite.t0) / 1500;
     if (k >= 1) { rewrite = null; curI = -1; }
-    else { U.uMix.value = k; offsetOf(wordStation, U.uFromOff.value); U.uToOff.value.copy(U.uFromOff.value); U.uFromRot.value = U.uToRot.value = 0; U.uFromA.value = U.uToA.value = 1; }
+    else { U.uMix.value = k; offsetOf(wordStation, U.uFromOff.value); U.uToOff.value.copy(U.uFromOff.value); U.uFromRot.value = U.uToRot.value = 0; U.uFromA.value = U.uToA.value = 1; U.uFromRoll.value = U.uToRoll.value = U.uFromTilt.value = U.uToTilt.value = 0; }
   }
   if (!rewrite) {
     if (i !== curI) { aFrom.array.set(A.pos); aTo.array.set(B.pos); aFrom.needsUpdate = aTo.needsUpdate = true; curI = i; }
     U.uMix.value = sm(0.22, 0.78, fs - i);
     offsetOf(A, U.uFromOff.value); offsetOf(B, U.uToOff.value);
     U.uFromRot.value = A.def.rot(t); U.uToRot.value = B.def.rot(t); U.uFromA.value = A.def.alpha; U.uToA.value = B.def.alpha;
+    U.uFromRoll.value = A.def.roll ? A.def.roll(t) : 0; U.uToRoll.value = B.def.roll ? B.def.roll(t) : 0; U.uFromTilt.value = A.def.tilt || 0; U.uToTilt.value = B.def.tilt || 0;
   }
+  // the shift lights live only while the grains are the wheel
+  const m = U.uMix.value, wheelW = rewrite ? 0 : A.def === defs.wheel ? 1 - m : B.def === defs.wheel ? m : 0;
+  LU.uAlpha.value = wheelW * wheelW * wheelW;
+  if (wheelW > 0.01) { offsetOf(wheelStation, LU.uOff.value); LU.uRot.value = defs.wheel.rot(t); LU.uRoll.value = defs.wheel.roll(t); LU.uTilt.value = defs.wheel.tilt; stepEngine(dt, now); }
   mouse.lerp(mTarget, Math.min(1, dt * 10)); U.uMouse.value.copy(mouse);
   stirTarget = Math.max(0.22, stirTarget - dt * 0.9); U.uStir.value += (stirTarget - U.uStir.value) * Math.min(1, dt * 6);
   par += (parT - par) * Math.min(1, dt * 3); camera.position.x = par * 6; camera.lookAt(0, 0, 0);
