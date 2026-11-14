@@ -39,6 +39,10 @@ h2{font-size:var(--head)}
 
 #ash{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block}
 main,footer{position:relative;z-index:1}
+/* where a section shows only the particle canvas, the canvas is what the pointer meets */
+main,#work,.hero,.mid,.hero-foot,.work-head,.project,.stage,.more,.about,.about .grid,.contact{pointer-events:none}
+main > section{pointer-events:auto}
+.mid h1,.hero-foot > *,.work-head h2,.project .copy,.project .shot,.more > *,.about .grid > *,.contact > :not(.stage){pointer-events:auto}
 .wrap{padding-inline:var(--m)}
 .grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
 
@@ -78,11 +82,20 @@ h1{font-size:15.4vw;line-height:.82;letter-spacing:-0.03em;white-space:nowrap;te
 
 /* work */
 .work-head{padding-top:120px}
-.project{min-height:100svh;align-items:center;padding-block:48px}
-.project .stage{grid-column:6/13;height:76svh;grid-row:1}
-.project .copy{grid-column:1/5;grid-row:1}
+.project{align-items:start;padding-block:48px 120px;row-gap:40px}
+.project .stage{grid-column:6/13;height:72svh;grid-row:1}
+.project .copy{grid-column:1/5;grid-row:1/3;position:sticky;top:28svh;margin-top:14svh}
 .project.flip .stage{grid-column:1/8}
 .project.flip .copy{grid-column:9/13}
+.shot{grid-column:6/13;grid-row:2;margin:0;display:grid;gap:24px}
+.project.flip .shot{grid-column:1/8}
+.shot .pair{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.frame{background:var(--surface);padding:clamp(10px,1.4vw,24px);overflow:hidden}
+.frame img{display:block;width:100%;height:auto}
+.shot figcaption{color:var(--muted);font-size:var(--small)}
+.js .frame[data-in]{opacity:1;transform:none}
+.js .frame[data-in] img{clip-path:inset(0 0 100% 0);transform:scale(1.1);transition:clip-path 1.1s var(--ease),transform 1.4s var(--ease);transition-delay:calc(var(--i,0)*120ms)}
+.js .frame[data-in].in img{clip-path:inset(0);transform:none}
 .project h3{font-size:var(--head);margin-bottom:24px}
 .project p{margin-bottom:16px}
 .meta{color:var(--muted);font-size:var(--small)}
@@ -187,9 +200,11 @@ h1{font-size:15.4vw;line-height:.82;letter-spacing:-0.03em;white-space:nowrap;te
   .hero-foot p{grid-column:1/13;margin-bottom:24px}
   .hero-foot .acts{grid-column:1/13;justify-self:start;flex-direction:row-reverse}
   .work-head{padding-top:88px}
-  .project{padding-block:24px 72px;row-gap:16px;align-content:center}
+  .project{padding-block:24px 72px;row-gap:16px}
   .project .stage,.project.flip .stage{grid-column:1/13;grid-row:1;height:46svh}
-  .project .copy,.project.flip .copy{grid-column:1/13;grid-row:2}
+  .project .copy,.project.flip .copy{grid-column:1/13;grid-row:2;position:static;margin-top:0}
+  .shot,.project.flip .shot{grid-column:1/13;grid-row:3;margin-top:24px;gap:16px}
+  .shot .pair{grid-template-columns:1fr;gap:16px}
   .more{padding-block:0 96px}
   .more .remark,.more ul{grid-column:1/13}
   .more li a{grid-template-columns:1fr auto}
@@ -231,6 +246,7 @@ h1{font-size:15.4vw;line-height:.82;letter-spacing:-0.03em;white-space:nowrap;te
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .js [data-in]{transform:none;transition:opacity .4s}
+  .js .frame[data-in] img{clip-path:none;transform:none;transition:none}
   .btn,.btn svg,.tools tr,.rows a,.more li a,.bar{transition:none}
 }
 </style>
@@ -278,6 +294,10 @@ h1{font-size:15.4vw;line-height:.82;letter-spacing:-0.03em;white-space:nowrap;te
         <p class="meta" data-in style="--i:2">C# · Windows · WASAPI</p>
         <a class="link" href="https://github.com/ashenthiwanka99/DualAudio" data-in style="--i:3">Read the code on GitHub</a>
       </div>
+      <figure class="shot">
+        <div class="frame" data-in><img src="assets/dualaudio.png" width="1040" height="900" decoding="async" alt="The DualAudio window: a sync timeline in milliseconds, a list of headsets set to Main, Copy or Off, and start-up options"></div>
+        <figcaption>The app itself. Choose the main headset, give a second one a copy, and slide them into step on the sync timeline.</figcaption>
+      </figure>
     </article>
 
     <article class="project flip wrap grid" data-station>
@@ -288,6 +308,14 @@ h1{font-size:15.4vw;line-height:.82;letter-spacing:-0.03em;white-space:nowrap;te
         <p class="meta" data-in style="--i:2">JavaScript · Desktop · Hardware</p>
         <a class="link" href="https://github.com/ashenthiwanka99/x68-control" data-in style="--i:3">Read the code on GitHub</a>
       </div>
+      <figure class="shot">
+        <div class="frame" data-in><img src="assets/x68-rapid.png" width="1440" height="900" decoding="async" alt="X68 Control, Gaming screen: every key with its press depth, a row of saved setups, and automatic switching per game"></div>
+        <div class="pair">
+          <div class="frame" data-in><img src="assets/x68-lighting.png" width="1440" height="900" decoding="async" alt="X68 Control, Lighting screen: a grid of effects, brightness and speed, and a keyboard to paint key by key"></div>
+          <div class="frame" data-in style="--i:1"><img src="assets/x68-macros.png" width="1440" height="900" decoding="async" alt="X68 Control, Macros screen: a macro bound to Fn and Right Ctrl that works only in chosen games"></div>
+        </div>
+        <figcaption>Three of its six screens: gaming setups with press depth for every key, lighting, and macros stored on the keyboard.</figcaption>
+      </figure>
     </article>
 
     <article class="project wrap grid" data-station>
@@ -301,7 +329,7 @@ h1{font-size:15.4vw;line-height:.82;letter-spacing:-0.03em;white-space:nowrap;te
     </article>
 
     <div class="more wrap grid">
-      <p class="remark" data-in>Nothing above is a picture or a model. The same grains redraw themselves for every project. More on GitHub:</p>
+      <p class="remark" data-in>The shapes are not pictures or models. The same grains redraw themselves for every project. More on GitHub:</p>
       <ul>
         <li data-in><a href="https://github.com/ashenthiwanka99/playwright-e2e-demo"><b>playwright-e2e-demo</b><span>End-to-end and API tests for a demo shop in Playwright and TypeScript, run on GitHub Actions.</span><i aria-hidden="true">↗</i></a></li>
         <li data-in style="--i:1"><a href="https://github.com/ashenthiwanka99/web-scraper-demo"><b>web-scraper-demo</b><span>A Playwright scraper that saves all 1,000 books from Books to Scrape as CSV and JSON.</span><i aria-hidden="true">↗</i></a></li>
@@ -405,8 +433,8 @@ h1{font-size:15.4vw;line-height:.82;letter-spacing:-0.03em;white-space:nowrap;te
         <li data-in style="--i:1"><h3>Mobile apps</h3><p>React Native and Flutter apps wired to AWS or Firebase.</p></li>
       </ul>
       <div class="acts" data-in>
-        <a class="btn" href="https://www.fiverr.com/">Hire me on Fiverr <svg width="13" height="13" viewBox="0 0 13 13" aria-hidden="true"><path d="M2 11 11 2M4 2h7v7" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
-        <a class="btn" href="https://www.upwork.com/">Hire me on Upwork <svg width="13" height="13" viewBox="0 0 13 13" aria-hidden="true"><path d="M2 11 11 2M4 2h7v7" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
+        <a class="btn" href="https://www.fiverr.com/ashenthiwanka">Hire me on Fiverr <svg width="13" height="13" viewBox="0 0 13 13" aria-hidden="true"><path d="M2 11 11 2M4 2h7v7" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
+        <a class="btn" href="https://www.upwork.com/freelancers/~018fecd00b8ea5aa89">Hire me on Upwork <svg width="13" height="13" viewBox="0 0 13 13" aria-hidden="true"><path d="M2 11 11 2M4 2h7v7" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
       </div>
     </div>
   </section>
@@ -414,7 +442,7 @@ h1{font-size:15.4vw;line-height:.82;letter-spacing:-0.03em;white-space:nowrap;te
   <section class="tools wrap" id="toolbox" aria-labelledby="tools-h">
     <div class="grid">
       <h2 id="tools-h" data-in>Toolbox</h2>
-      <p class="note" data-in>This page is three.js and one hand-written shader. No models, no images, sixty frames a second.</p>
+      <p class="note" data-in>This page is three.js and one hand-written shader. No 3D models, sixty frames a second.</p>
       <table data-in style="--i:1">
         <caption hidden>Tools by area</caption>
         <tbody>
@@ -469,8 +497,8 @@ h1{font-size:15.4vw;line-height:.82;letter-spacing:-0.03em;white-space:nowrap;te
       <a href="mailto:ashenthiwanka16@gmail.com?subject=Hello%20Ashen"><span>ashenthiwanka16@gmail.com</span><small>Write to me</small></a>
       <a href="https://github.com/ashenthiwanka99"><span>GitHub</span><small>Read the code</small></a>
       <a href="https://www.linkedin.com/in/ashen-perera-552928213/"><span>LinkedIn</span><small>See the history</small></a>
-      <a href="https://www.fiverr.com/"><span>Fiverr</span><small>Book a gig</small></a>
-      <a href="https://www.upwork.com/"><span>Upwork</span><small>Start a contract</small></a>
+      <a href="https://www.fiverr.com/ashenthiwanka"><span>Fiverr</span><small>Book a gig</small></a>
+      <a href="https://www.upwork.com/freelancers/~018fecd00b8ea5aa89"><span>Upwork</span><small>Start a contract</small></a>
     </div>
   </section>
 </main>
@@ -479,7 +507,7 @@ h1{font-size:15.4vw;line-height:.82;letter-spacing:-0.03em;white-space:nowrap;te
   <div class="grid cols">
     <div><p>Contact</p><ul><li><a href="mailto:ashenthiwanka16@gmail.com">ashenthiwanka16@gmail.com</a></li><li>Colombo, Sri Lanka</li><li><a href="Ashen-Perera-CV.pdf" download>Download CV</a></li></ul></div>
     <div><p>Pages</p><ul><li><a href="#work">Work</a></li><li><a href="#experience">Experience</a></li><li><a href="#about">About</a></li><li><a href="#toolbox">Toolbox</a></li></ul></div>
-    <div><p>Elsewhere</p><ul><li><a href="https://github.com/ashenthiwanka99">GitHub</a></li><li><a href="https://www.linkedin.com/in/ashen-perera-552928213/">LinkedIn</a></li><li><a href="https://www.fiverr.com/">Fiverr</a></li><li><a href="https://www.upwork.com/">Upwork</a></li></ul></div>
+    <div><p>Elsewhere</p><ul><li><a href="https://github.com/ashenthiwanka99">GitHub</a></li><li><a href="https://www.linkedin.com/in/ashen-perera-552928213/">LinkedIn</a></li><li><a href="https://www.fiverr.com/ashenthiwanka">Fiverr</a></li><li><a href="https://www.upwork.com/freelancers/~018fecd00b8ea5aa89">Upwork</a></li></ul></div>
     <div><p>Colophon</p><ul><li>Built with three.js</li><li>Set in Barlow</li></ul></div>
   </div>
   <div></div>
@@ -712,7 +740,7 @@ function layout(force) {
   W = H * camera.aspect; px = H / h;
   const rebuild = force || w !== lastW || Math.abs(h - lastH) > 140;
   for (const s of stations) {
-    const r = s.el.getBoundingClientRect(); s.cy = r.top + scrollY + r.height / 2;
+    const r = s.stage.getBoundingClientRect(); s.cy = r.top + scrollY + r.height / 2;
     if (rebuild) { const q = s.stage.getBoundingClientRect(); s.pos = s.def.make(q.width * px, q.height * px); }
   }
   if (rebuild) { lastW = w; lastH = h; curI = -1; }
@@ -745,11 +773,12 @@ input.addEventListener('input', () => { clearTimeout(deb); deb = setTimeout(() =
 let fs = 0, t = 0, last = performance.now();
 const sm = (a, b, x) => { x = Math.max(0, Math.min(1, (x - a) / (b - a))); return x * x * (3 - 2 * x); };
 function frame(now) {
-  const dt = Math.min(0.05, (now - last) / 1000); last = now; if (!reduce) t += dt; U.uTime.value = t;
+  const dt = Math.max(0, Math.min(0.05, (now - last) / 1000)); last = now; if (!reduce) t += dt; U.uTime.value = t;
   // which two stations are we between?
   const y = scrollY + innerHeight / 2; let f = K - 1;
   if (y <= stations[0].cy) f = 0; else for (let k = 0; k < K - 1; k++) if (y < stations[k + 1].cy) { f = k + (y - stations[k].cy) / (stations[k + 1].cy - stations[k].cy); break; }
   fs = reduce ? f : fs + (f - fs) * Math.min(1, dt * 7);
+  fs = Math.max(0, Math.min(K - 1, fs));
   let i = Math.min(Math.floor(fs), K - 2), A = stations[i], B = stations[i + 1];
   if (rewrite) {
     const k = (now - rewrite.t0) / 1500;
