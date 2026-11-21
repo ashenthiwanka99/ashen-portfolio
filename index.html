@@ -195,11 +195,17 @@
  ]
 }
 </script>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230d0c0b'/%3E%3Cpath d='M7 26 16 5l9 21h-4.6l-1.5-3.9h-5.8L11.6 26zM14.5 18.3h3L16 14.2z' fill='%23ff5a1f'/%3E%3C/svg%3E">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0d0c0b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=Barlow:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=Barlow:wght@400;500&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=Barlow:wght@400;500&display=swap"></noscript>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
 <style>
 :root{
@@ -260,7 +266,7 @@ main > section{pointer-events:auto}
 .bar ul{display:flex;gap:clamp(18px,3vw,48px)}
 
 /* hero */
-.hero{min-height:100svh;display:grid;grid-template-rows:1fr auto;padding-block:72px var(--m)}
+.hero{min-height:100svh;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:1fr auto;padding-block:72px var(--m)}
 .mid{display:grid;place-items:center;min-height:0}
 h1{font-size:15.4vw;line-height:.82;letter-spacing:-0.03em;white-space:nowrap;text-align:center}
 .gl h1{color:transparent;user-select:none}
@@ -501,12 +507,12 @@ h1{font-size:15.4vw;line-height:.82;letter-spacing:-0.03em;white-space:nowrap;te
         <a class="link" href="https://github.com/ashenthiwanka99/floww-finance" data-in style="--i:3">Read the code on GitHub</a>
       </div>
       <figure class="shot">
-        <div class="frame" data-in><img src="assets/floww-hero.webp" width="2560" height="1600" decoding="async" alt="Three Floww screens side by side: Activity with a daily spending chart, Home with the amount left to spend this cycle, and Bills with a two-week calendar"></div>
+        <div class="frame" data-in><img src="assets/floww-hero.webp" srcset="assets/floww-hero-960.webp 960w, assets/floww-hero-1440.webp 1440w, assets/floww-hero-1920.webp 1920w, assets/floww-hero.webp 2560w" sizes="(max-width: 820px) calc(100vw - 32px), 56vw" loading="lazy" width="2560" height="1600" decoding="async" alt="Three Floww screens side by side: Activity with a daily spending chart, Home with the amount left to spend this cycle, and Bills with a two-week calendar"></div>
         <div class="phones">
-          <div class="frame" data-in style="--i:0"><video autoplay muted loop playsinline preload="metadata" width="780" height="1688" poster="assets/floww-poster.webp" aria-label="A nine-second recording of Floww: Home scrolled from top to bottom, then Activity and Bills"><source src="assets/floww.mp4" type="video/mp4"></video></div>
-          <div class="frame" data-in style="--i:1"><img src="assets/floww-sms.webp" width="780" height="1688" decoding="async" alt="Floww, Bank SMS: five transactions read from bank messages, each with an Add button"></div>
-          <div class="frame" data-in style="--i:2"><img src="assets/floww-report.webp" width="780" height="1688" decoding="async" alt="Floww, Monthly report: money in, paid out and net, with spending by cycle as a bar chart"></div>
-          <div class="frame" data-in style="--i:3"><img src="assets/floww-card.webp" width="780" height="1688" decoding="async" alt="Floww, a credit card: amount owed, the next settlement and this cycle's charges"></div>
+          <div class="frame" data-in style="--i:0"><video muted loop playsinline preload="none" width="780" height="1688" poster="assets/floww-poster.webp" aria-label="A nine-second recording of Floww: Home scrolled from top to bottom, then Activity and Bills"><source src="assets/floww.mp4" type="video/mp4"></video></div>
+          <div class="frame" data-in style="--i:1"><img src="assets/floww-sms.webp" srcset="assets/floww-sms-390.webp 390w, assets/floww-sms.webp 780w" sizes="(max-width: 820px) calc(50vw - 22px), 13vw" loading="lazy" width="780" height="1688" decoding="async" alt="Floww, Bank SMS: five transactions read from bank messages, each with an Add button"></div>
+          <div class="frame" data-in style="--i:2"><img src="assets/floww-report.webp" srcset="assets/floww-report-390.webp 390w, assets/floww-report.webp 780w" sizes="(max-width: 820px) calc(50vw - 22px), 13vw" loading="lazy" width="780" height="1688" decoding="async" alt="Floww, Monthly report: money in, paid out and net, with spending by cycle as a bar chart"></div>
+          <div class="frame" data-in style="--i:3"><img src="assets/floww-card.webp" srcset="assets/floww-card-390.webp 390w, assets/floww-card.webp 780w" sizes="(max-width: 820px) calc(50vw - 22px), 13vw" loading="lazy" width="780" height="1688" decoding="async" alt="Floww, a credit card: amount owed, the next settlement and this cycle's charges"></div>
         </div>
         <figcaption>Activity, Home and Bills, then a recording of the app in use, bank SMS import, the monthly report and a credit card.</figcaption>
       </figure>
@@ -537,7 +543,7 @@ h1{font-size:15.4vw;line-height:.82;letter-spacing:-0.03em;white-space:nowrap;te
         <a class="link" href="https://github.com/ashenthiwanka99/DualAudio" data-in style="--i:3">Read the code on GitHub</a>
       </div>
       <figure class="shot">
-        <div class="frame" data-in><img src="assets/dualaudio.png" width="1040" height="900" decoding="async" alt="The DualAudio window: a sync timeline in milliseconds, a list of headsets set to Main, Copy or Off, and start-up options"></div>
+        <div class="frame" data-in><img src="assets/dualaudio.png" srcset="assets/dualaudio-520.webp 520w, assets/dualaudio.png 1040w" sizes="(max-width: 820px) calc(100vw - 32px), 56vw" loading="lazy" width="1040" height="900" decoding="async" alt="The DualAudio window: a sync timeline in milliseconds, a list of headsets set to Main, Copy or Off, and start-up options"></div>
         <figcaption>The app itself. Choose the main headset, give a second one a copy, and slide them into step on the sync timeline.</figcaption>
       </figure>
     </article>
@@ -551,10 +557,10 @@ h1{font-size:15.4vw;line-height:.82;letter-spacing:-0.03em;white-space:nowrap;te
         <a class="link" href="https://github.com/ashenthiwanka99/x68-control" data-in style="--i:3">Read the code on GitHub</a>
       </div>
       <figure class="shot">
-        <div class="frame" data-in><img src="assets/x68-rapid.webp" width="2880" height="1800" decoding="async" alt="X68 Control, Gaming screen: every key with its press depth, a row of saved setups, and automatic switching per game"></div>
+        <div class="frame" data-in><img src="assets/x68-rapid.webp" srcset="assets/x68-rapid-960.webp 960w, assets/x68-rapid-1440.webp 1440w, assets/x68-rapid-1920.webp 1920w, assets/x68-rapid.webp 2880w" sizes="(max-width: 820px) calc(100vw - 32px), 56vw" loading="lazy" width="2880" height="1800" decoding="async" alt="X68 Control, Gaming screen: every key with its press depth, a row of saved setups, and automatic switching per game"></div>
         <div class="pair">
-          <div class="frame" data-in><img src="assets/x68-lighting.webp" width="2880" height="1800" decoding="async" alt="X68 Control, Lighting screen: a grid of effects, brightness and speed, and a keyboard to paint key by key"></div>
-          <div class="frame" data-in style="--i:1"><img src="assets/x68-macros.webp" width="2880" height="1800" decoding="async" alt="X68 Control, Macros screen: a macro bound to Fn and Right Ctrl that works only in chosen games"></div>
+          <div class="frame" data-in><img src="assets/x68-lighting.webp" srcset="assets/x68-lighting-720.webp 720w, assets/x68-lighting-1440.webp 1440w, assets/x68-lighting.webp 2880w" sizes="(max-width: 820px) calc(100vw - 32px), 27vw" loading="lazy" width="2880" height="1800" decoding="async" alt="X68 Control, Lighting screen: a grid of effects, brightness and speed, and a keyboard to paint key by key"></div>
+          <div class="frame" data-in style="--i:1"><img src="assets/x68-macros.webp" srcset="assets/x68-macros-720.webp 720w, assets/x68-macros-1440.webp 1440w, assets/x68-macros.webp 2880w" sizes="(max-width: 820px) calc(100vw - 32px), 27vw" loading="lazy" width="2880" height="1800" decoding="async" alt="X68 Control, Macros screen: a macro bound to Fn and Right Ctrl that works only in chosen games"></div>
         </div>
         <figcaption>Three of its six screens: gaming setups with press depth for every key, lighting, and macros stored on the keyboard.</figcaption>
       </figure>
@@ -769,15 +775,18 @@ import * as THREE from 'three';
 const canvas = document.getElementById('ash');
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const small = Math.min(innerWidth, innerHeight) < 700;
-const N = small ? 18000 : 40000;
-document.querySelectorAll('[data-count]').forEach(e => e.textContent = N.toLocaleString('en-US'));
 
 let renderer;
 try { renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: false, powerPreference: 'high-performance' }); }
 catch (e) { canvas.remove(); throw e; }
+// Without a graphics card the browser draws WebGL on the CPU; give those machines a lighter scene.
+const soft = (() => { try { const gl = renderer.getContext(), d = gl.getExtension('WEBGL_debug_renderer_info');
+  return /swiftshader|llvmpipe|softpipe|software|basic render/i.test(d ? gl.getParameter(d.UNMASKED_RENDERER_WEBGL) : ''); } catch (e) { return false; } })();
+const N = soft ? 12000 : small ? 18000 : 40000;
+document.querySelectorAll('[data-count]').forEach(e => e.textContent = N.toLocaleString('en-US'));
 document.documentElement.classList.add('gl');
 renderer.setClearColor(0x0d0c0b, 1);
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setPixelRatio(soft ? 1 : Math.min(devicePixelRatio, 2));
 
 const FOV = 40, CAMZ = 6;
 const camera = new THREE.PerspectiveCamera(FOV, 1, 0.1, 50);
@@ -953,7 +962,7 @@ geo.setAttribute('position', aFrom); geo.setAttribute('aTo', aTo); geo.setAttrib
 geo.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 100);
 
 const U = {
-  uTime: { value: 0 }, uMix: { value: 0 }, uPR: { value: renderer.getPixelRatio() }, uSize: { value: small ? 1.6 : 2.3 },
+  uTime: { value: 0 }, uMix: { value: 0 }, uPR: { value: renderer.getPixelRatio() }, uSize: { value: soft ? 3.1 : small ? 1.6 : 2.3 },
   uFromRot: { value: 0 }, uToRot: { value: 0 }, uFromA: { value: 1 }, uToA: { value: 1 },
   uFromRoll: { value: 0 }, uToRoll: { value: 0 }, uFromTilt: { value: 0 }, uToTilt: { value: 0 },
   uFromOff: { value: new THREE.Vector3() }, uToOff: { value: new THREE.Vector3() },
@@ -1005,7 +1014,7 @@ const points = new THREE.Points(geo, mat);
 scene.add(points);
 
 /* slow dust falling through the whole room */
-const DN = small ? 250 : 600, dgeo = new THREE.BufferGeometry(), dp = new Float32Array(DN * 3), dr = new Float32Array(DN);
+const DN = soft ? 150 : small ? 250 : 600, dgeo = new THREE.BufferGeometry(), dp = new Float32Array(DN * 3), dr = new Float32Array(DN);
 for (let i = 0; i < DN; i++) { dp[i * 3] = (rnd() - 0.5) * 14; dp[i * 3 + 1] = rnd() * 8; dp[i * 3 + 2] = (rnd() - 0.5) * 6 - 1; dr[i] = rnd(); }
 dgeo.setAttribute('position', new THREE.BufferAttribute(dp, 3)); dgeo.setAttribute('r', new THREE.BufferAttribute(dr, 1));
 dgeo.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 100);
@@ -1019,7 +1028,13 @@ const dust = new THREE.Points(dgeo, new THREE.ShaderMaterial({
 scene.add(dust);
 
 /* ---------- layout ---------- */
-let lastW = 0, lastH = 0, curI = -1;
+let lastW = 0, lastH = 0, curI = -1, buildGen = 0;
+function build(s) { const q = s.stage.getBoundingClientRect(); return (s.pos = s.def.make(q.width * px, q.height * px)); }
+function ensure(s) { return s.pos || build(s); }
+const whenIdle = window.requestIdleCallback ? f => requestIdleCallback(f, { timeout: 3000 }) : f => setTimeout(f, 250);
+function buildRest(gen) {                // one shape per idle moment, so no single task holds the page up
+  whenIdle(() => { if (gen !== buildGen) return; const s = stations.find(x => !x.pos); if (s) { build(s); buildRest(gen); } });
+}
 function layout(force) {
   const w = innerWidth, h = innerHeight;
   renderer.setSize(w, h, false);
@@ -1028,9 +1043,9 @@ function layout(force) {
   const rebuild = force || w !== lastW || Math.abs(h - lastH) > 140;
   for (const s of stations) {
     const r = s.stage.getBoundingClientRect(); s.cy = r.top + scrollY + r.height / 2;
-    if (rebuild) { const q = s.stage.getBoundingClientRect(); s.pos = s.def.make(q.width * px, q.height * px); }
+    if (rebuild) s.pos = null;
   }
-  if (rebuild) { lastW = w; lastH = h; curI = -1; }
+  if (rebuild) { lastW = w; lastH = h; curI = -1; buildRest(++buildGen); }
 }
 function offsetOf(s, v) {            // where the station's stage is on screen right now, in world units
   const q = s.stage.getBoundingClientRect();
@@ -1055,15 +1070,18 @@ const input = document.getElementById('word'), wordStation = stations[K - 1]; le
 input.addEventListener('input', () => { clearTimeout(deb); deb = setTimeout(() => {
   const next = (input.value.trim() || 'Hello').toUpperCase().slice(0, 10);
   if (next === word) return;
-  const old = wordStation.pos; word = next;
-  const q = wordStation.stage.getBoundingClientRect(); wordStation.pos = wordStation.def.make(q.width * px, q.height * px);
+  const old = ensure(wordStation); word = next;
+  build(wordStation);
   rewrite = { old, t0: performance.now() }; aFrom.array.set(old); aTo.array.set(wordStation.pos); aFrom.needsUpdate = aTo.needsUpdate = true;
 }, 220); });
 
 /* ---------- frame ---------- */
 let fs = 0, t = 0, last = performance.now();
 const sm = (a, b, x) => { x = Math.max(0, Math.min(1, (x - a) / (b - a))); return x * x * (3 - 2 * x); };
+let lastDraw = 0;
 function frame(now) {
+  if (soft && now - lastDraw < 32) { requestAnimationFrame(frame); return; }
+  lastDraw = now;
   const dt = Math.max(0, Math.min(0.05, (now - last) / 1000)); last = now; if (!reduce) t += dt; U.uTime.value = t;
   // which two stations are we between?
   const y = scrollY + innerHeight / 2; let f = K - 1;
@@ -1077,7 +1095,7 @@ function frame(now) {
     else { U.uMix.value = k; offsetOf(rewrite.station || wordStation, U.uFromOff.value); U.uToOff.value.copy(U.uFromOff.value); U.uFromRot.value = U.uToRot.value = 0; U.uToA.value = 1; U.uFromA.value = rewrite.fromA ?? 1; U.uFromRoll.value = U.uToRoll.value = U.uFromTilt.value = U.uToTilt.value = 0; }
   }
   if (!rewrite) {
-    if (i !== curI) { aFrom.array.set(A.pos); aTo.array.set(B.pos); aFrom.needsUpdate = aTo.needsUpdate = true; curI = i; }
+    if (i !== curI) { aFrom.array.set(ensure(A)); aTo.array.set(ensure(B)); aFrom.needsUpdate = aTo.needsUpdate = true; curI = i; }
     U.uMix.value = sm(0.22, 0.78, fs - i);
     offsetOf(A, U.uFromOff.value); offsetOf(B, U.uToOff.value);
     U.uFromRot.value = A.def.rot(t); U.uToRot.value = B.def.rot(t); U.uFromA.value = A.def.alpha; U.uToA.value = B.def.alpha;
@@ -1091,13 +1109,15 @@ function frame(now) {
 }
 
 let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => layout(false), 120); });
+const fontCss = document.querySelector('link[rel=stylesheet][href*="fonts.googleapis"]');
+if (fontCss && fontCss.media !== 'all') await new Promise(r => { fontCss.addEventListener('load', r, { once: true }); setTimeout(r, 4000); });
 try { await document.fonts.load('700 220px "Barlow Condensed"'); } catch (e) {}
 layout(true);
 if (!reduce && scrollY < innerHeight * 0.5) {          // the opening: the name gathers out of drifting ash
   const sc = new Float32Array(N * 3);
   for (let i = 0; i < N; i++) { sc[i * 3] = (rnd() - 0.5) * W * 1.6; sc[i * 3 + 1] = (rnd() - 0.5) * H * 1.6; sc[i * 3 + 2] = (rnd() - 0.5) * 5 - 1; }
   rewrite = { old: sc, t0: performance.now() + 350, dur: 2800, station: stations[0], fromA: 0.3 };
-  aFrom.array.set(sc); aTo.array.set(stations[0].pos); aFrom.needsUpdate = aTo.needsUpdate = true;
+  aFrom.array.set(sc); aTo.array.set(ensure(stations[0])); aFrom.needsUpdate = aTo.needsUpdate = true;
 }
 addEventListener('load', () => layout(false));
 requestAnimationFrame(frame);
