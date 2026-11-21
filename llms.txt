@@ -1,0 +1,40 @@
+# Ashen Perera
+
+> Ashen Perera is a senior full stack engineer based in Colombo, Sri Lanka, with more than six years of experience building multi-tenant B2B SaaS, travel tech and fintech products. He works across the stack with Node.js, NestJS, React, Next.js, .NET and AWS, ships LLM features to production, and takes freelance work through Fiverr and Upwork.
+
+Website: https://ashenperera.dev/
+
+## Work history
+
+- Docupath, Senior Software Engineer (Feb 2026 to now): NestJS, TypeORM and PostgreSQL services for a multi-tenant B2B platform serving EU and US regions, a React visual mapping editor, OpenAI-backed features, and a Playwright suite on AWS Fargate Spot with Terraform and GitHub Actions.
+- Centronixx, Senior Software Engineer (Apr 2024 to Feb 2026): Reservato AI, an AI chat and restaurant booking platform in Next.js and OpenAI; Nourah, a Flutter trip-planning assistant on AWS; a RAG pipeline on a fine-tuned Mistral model with Pinecone; and a PCI-compliant Mastercard payments API for DFCC Bank.
+- Infragist, Software Engineer (May 2022 to Mar 2024): a condominium management platform, a multiplayer quiz game, NFT event ticketing on Solana, and a medical reporting app.
+- Earlier (Sep 2020 to Apr 2022): junior and intern roles at Afisol and IAS Solutions.
+
+## Selected result
+
+- Cut a search across 20,000 documents from 5.0 s to 21 ms in testing with a PostgreSQL trigram (pg_trgm) GIN index, and made a token lookup 213 times faster.
+
+## Projects
+
+- [Floww](https://github.com/ashenthiwanka99/floww-finance): personal finance app for Android that reads bank SMS and turns each message into an expense; tracks bills, credit cards, loans and rupee, dollar and cash wallets. Vue 3, Quasar, Capacitor, Firebase.
+- [Archive](https://github.com/ashenthiwanka99/archive-smb-vault): private photo and file vault for Android over SMB, with gallery backup, a duplicate finder and a music player. Vue 3, Quasar, Capacitor, Java.
+- [DualAudio](https://github.com/ashenthiwanka99/DualAudio): plays the same sound on two Bluetooth headsets at once on Windows, in sync, on raw WASAPI. C#.
+- [X68 Control](https://github.com/ashenthiwanka99/x68-control): offline settings app for the Attack Shark X68 HE keyboard with Rapid Trigger, per-game setups, macros and lighting.
+- [playwright-e2e-demo](https://github.com/ashenthiwanka99/playwright-e2e-demo) and [web-scraper-demo](https://github.com/ashenthiwanka99/web-scraper-demo): Playwright test automation and scraping examples.
+
+## Services
+
+Full stack web apps, AI features (chat, search, RAG), secure APIs and payments, Playwright test automation, scraping and data, and React Native or Flutter mobile apps. Available 9 am to 10 pm Sri Lanka time (UTC+5:30); replies within 30 minutes.
+
+## Education
+
+National Institute of Business Management (NIBM), Sri Lanka: BSc (Hons) in Computing and Software Engineering, Higher National Diploma in Software Engineering, Diploma in Software Engineering.
+
+## Contact
+
+- Email: ashenthiwanka16@gmail.com
+- GitHub: https://github.com/ashenthiwanka99
+- LinkedIn: https://www.linkedin.com/in/ashen-perera-552928213/
+- Fiverr: https://www.fiverr.com/ashenthiwanka
+- Upwork: https://www.upwork.com/freelancers/~018fecd00b8ea5aa89

@@ -1,0 +1,6 @@
+# Every crawler is welcome, including search engines and AI assistants
+# (Googlebot, Bingbot, Google-Extended, GPTBot, OAI-SearchBot, ClaudeBot, PerplexityBot).
+User-agent: *
+Allow: /
+
+Sitemap: https://ashenperera.dev/sitemap.xml
